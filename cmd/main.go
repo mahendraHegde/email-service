@@ -2,8 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net"
+	"strconv"
 
+	pb "github.com/mahendraHegde/email-service"
 	conf "github.com/mahendraHegde/email-service/src/config"
+	"github.com/mahendraHegde/email-service/src/server"
+	emailService "github.com/mahendraHegde/email-service/src/service/email"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -11,22 +18,22 @@ func main() {
 	if err != nil {
 		fmt.Printf("Unable to read config, %v", err)
 	}
-	fmt.Println(config)
 
-	// port := ":" + viper.GetString("port")
-	// if port == ":" {
-	// 	port = ":" + strconv.Itoa(configuration.ServerPort)
-	// }
-	// port := ":" + strconv.Itoa(configuration.Server.Port)
+	//Create MailClient
+	mailService := emailService.NewMailClient(config.MailJet)
 
-	// lis, err := net.Listen("tcp", port)
-	// if err != nil {
-	// 	log.Fatalf("failed to listen: %v", err)
-	// }
-	// s := grpc.NewServer()
-	// pb.RegisterEmailServer(s, &server.Server{})
-	// log.Printf("Listening on PORT %v", port)
-	// if err := s.Serve(lis); err != nil {
-	// 	log.Fatalf("failed to serve: %v", err)
-	// }
+	//create Server
+	server := server.Server{MailService: mailService}
+
+	port := ":" + strconv.Itoa(config.Server.Port)
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterEmailServer(s, &server)
+	log.Printf("Listening on PORT %v", port)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }
