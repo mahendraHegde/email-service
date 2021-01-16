@@ -14,7 +14,9 @@ type MailClient struct {
 func NewMailClient(conf config.MailJetConfig) *MailClient {
 	return &MailClient{Client: mailjet.NewMailjetClient(conf.ApiKey.Public, conf.ApiKey.Private)}
 }
-func (c *MailClient) SendMail(info []mailjet.InfoMessagesV31) {
+
+//SendMail exported
+func (c *MailClient) SendMail(info []mailjet.InfoMessagesV31) (err error) {
 	msgs := mailjet.MessagesV31{Info: info}
 	res, err := c.Client.SendMailV31(&msgs)
 	if err != nil {
@@ -22,4 +24,5 @@ func (c *MailClient) SendMail(info []mailjet.InfoMessagesV31) {
 		return
 	}
 	logger.Info("Email Successfuly sent to %v,res %v", info[0].To, res)
+	return
 }

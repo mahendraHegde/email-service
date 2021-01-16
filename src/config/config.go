@@ -35,12 +35,23 @@ type MailJetConfig struct {
 	}
 }
 
+var (
+	bindMap = map[string]string{
+		"server.port": "PORT",
+	}
+)
+
 // LoadConfig reads configuration from file or environment variables.
 func LoadConfig(path string) (config Configurations, err error) {
 
 	viper.AddConfigPath(path)
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
+
+	//bind env to struct
+	for k, v := range bindMap {
+		viper.BindEnv(k, v)
+	}
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
