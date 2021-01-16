@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/mahendraHegde/email-service;email_proto";
+
+package email_proto;
+
+// The greeting service definition.
+service Email {
+  // Sends a greeting
+  rpc SendContactMeEmail (ContactMeEmailRequest) returns (ContactMeEmailReply) {}
+}
+
+// The request message containing the user's name.
+message ContactMeEmailRequest {
+  string email = 1;
+  string name =2;
+  string subject = 3;
+  string detail = 4;
+}
+
+// The response message containing the greetings
+message ContactMeEmailReply {
+  string message = 1;
+}
