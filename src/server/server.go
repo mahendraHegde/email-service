@@ -7,8 +7,8 @@ import (
 	"github.com/mahendraHegde/email-service/src/config"
 	emailService "github.com/mahendraHegde/email-service/src/service/email"
 	emailUtils "github.com/mahendraHegde/email-service/src/service/email/utils"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 //Server Exported
@@ -23,7 +23,7 @@ func (s *Server) SendContactMeEmail(ctx context.Context, req *pb.ContactMeEmailR
 	data := emailUtils.NewContactMeMaildata(req.GetName(), req.GetEmail(), req.GetDetail(), req.GetSubject(), s.config.Me.Email, s.config.MailJet.Templates.ContactMe)
 	info := emailUtils.GenerateEmailMessageInfo(data)
 	if err := s.MailService.SendMail(info); err != nil {
-		return nil, grpc.Errorf(codes.Internal, "Failed to send email")
+		return nil, status.Errorf(codes.Internal, "Failed to send email")
 	}
 	return &pb.ContactMeEmailReply{Message: "Success"}, nil
 }
