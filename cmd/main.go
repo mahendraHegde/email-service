@@ -23,7 +23,7 @@ func main() {
 	mailService := emailService.NewMailClient(config.MailJet)
 
 	//create Server
-	server := server.Server{MailService: mailService}
+	server := server.Server{MailService: mailService, Config: config}
 
 	port := ":" + strconv.Itoa(config.Server.Port)
 	lis, err := net.Listen("tcp", port)

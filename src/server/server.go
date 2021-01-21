@@ -15,12 +15,12 @@ import (
 type Server struct {
 	pb.UnimplementedEmailServer
 	MailService *emailService.MailClient
-	config      config.Configurations
+	Config      config.Configurations
 }
 
 //SendContactMeEmail Exported
 func (s *Server) SendContactMeEmail(ctx context.Context, req *pb.ContactMeEmailRequest) (*pb.ContactMeEmailReply, error) {
-	data := emailUtils.NewContactMeMaildata(req.GetName(), req.GetEmail(), req.GetDetail(), req.GetSubject(), s.config.Me.Email, s.config.MailJet.Templates.ContactMe)
+	data := emailUtils.NewContactMeMaildata(req.GetName(), req.GetEmail(), req.GetDetail(), req.GetSubject(), s.Config.Me.Email, s.Config.MailJet.Templates.ContactMe)
 	info := emailUtils.GenerateEmailMessageInfo(data)
 	if err := s.MailService.SendMail(info); err != nil {
 		return nil, status.Errorf(codes.Internal, "Failed to send email")
