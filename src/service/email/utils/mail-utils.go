@@ -31,28 +31,28 @@ func GenerateEmailMessageInfo(data ContactMeMailData) []mailjet.InfoMessagesV31 
 		subject = `"NA"`
 	}
 	name := data.Name
-	if name == "" {
+	if len(name) == 0 {
 		name = `"NA"`
 	}
 	detail := data.Detail
-	if detail == "" {
+	if len(detail) == 0 {
 		detail = `"NA"`
 	}
 	email := data.Email
-	if email == "" {
+	if len(email) == 0 {
 		email = `"NA"`
 	}
-	variables := map[string]interface{}{
-		subject: subject,
-		name:    name,
-		detail:  detail,
-		email:   email,
-	}
+	variables := make(map[string]interface{})
+	variables["subject"] = subject
+	variables["name"] = name
+	variables["detail"] = detail
+	variables["email"] = email
+
 	return []mailjet.InfoMessagesV31{
 		mailjet.InfoMessagesV31{
 			Variables: variables,
 			From: &mailjet.RecipientV31{
-				Email: email,
+				Email: data.To,
 				Name:  name,
 			},
 			To: &mailjet.RecipientsV31{
