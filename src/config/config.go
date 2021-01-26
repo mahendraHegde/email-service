@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -80,5 +81,6 @@ func LoadConfig(path string) (config Configurations, err error) {
 
 	err = viper.Unmarshal(&config)
 	fmt.Println(config)
+	fmt.Println(os.Getenv("MAILJET_APIKEY_PUBLIC"))
 	return
 }
