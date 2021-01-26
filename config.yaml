@@ -1,7 +1,7 @@
 me:
-  email: ur@gmail.com
+  email: email
 hegdeflutes:
-  email: his@gmail.com
+  email: email
 server:
   port: 5000
 mailjet:
