@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -78,5 +79,6 @@ func LoadConfig(path string) (config Configurations, err error) {
 	}
 
 	err = viper.Unmarshal(&config)
+	fmt.Println(config)
 	return
 }
