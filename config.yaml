@@ -3,7 +3,8 @@ me:
 hegdeflutes:
   email: email
 server:
-  port: 5000
+  port: 3000
+  env: dev
 mailjet:
   templates:
     contactme: 2278881

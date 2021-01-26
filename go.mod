@@ -4,7 +4,9 @@ go 1.15
 
 require (
 	github.com/99designs/gqlgen v0.13.0
+	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/mailjet/mailjet-apiv3-go v0.0.0-20201009050126-c24bc15a9394
+	github.com/rs/cors v1.7.0 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.5.1 // indirect
