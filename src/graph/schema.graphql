@@ -3,9 +3,9 @@
 # https://gqlgen.com/getting-started/
 
 type Response {
- status:String!
+  status: String!
 }
-enum To{
+enum To {
   MAHENDRA
   HEGDEFLUTES
 }
