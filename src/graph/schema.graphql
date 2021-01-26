@@ -1,0 +1,22 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Response {
+ status:String!
+}
+enum To{
+  MAHENDRA
+  HEGDEFLUTES
+}
+input ContactUsEmail {
+  email: String!
+  name: String!
+  subject: String!
+  detail: String!
+  to: To!
+}
+
+type Mutation {
+  sendContactUsEmail(input: ContactUsEmail!): Response!
+}

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -9,13 +10,19 @@ import (
 
 // Configurations exported
 type Configurations struct {
-	Server  ServerConfig
-	MailJet MailJetConfig
-	Me      MeConfig
+	Server      ServerConfig
+	MailJet     MailJetConfig
+	Me          MeConfig
+	HegdeFlutes HegdeFlutesConfig
 }
 
 //MeConfig Exported
 type MeConfig struct {
+	Email string
+}
+
+//HegdeFlutes Exported
+type HegdeFlutesConfig struct {
 	Email string
 }
 
@@ -27,7 +34,8 @@ type ServerConfig struct {
 // MailJetConfig exported
 type MailJetConfig struct {
 	Templates struct {
-		ContactMe int
+		ContactMe            int
+		HegdeFlutesContactUs int
 	}
 	ApiKey struct {
 		Public  string
@@ -71,5 +79,6 @@ func LoadConfig(path string) (config Configurations, err error) {
 	}
 
 	err = viper.Unmarshal(&config)
+	fmt.Println(config)
 	return
 }

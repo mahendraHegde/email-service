@@ -3,17 +3,21 @@ package main
 import (
 	"fmt"
 	"log"
-	"net"
+	"net/http"
 	"strconv"
 
-	pb "github.com/mahendraHegde/email-service"
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
 	conf "github.com/mahendraHegde/email-service/src/config"
-	"github.com/mahendraHegde/email-service/src/server"
+	"github.com/mahendraHegde/email-service/src/graph"
+	"github.com/mahendraHegde/email-service/src/graph/generated"
 	emailService "github.com/mahendraHegde/email-service/src/service/email"
-	"google.golang.org/grpc"
 )
 
+const defaultPort = "8080"
+
 func main() {
+
 	config, err := conf.LoadConfig("./")
 	if err != nil {
 		fmt.Printf("Unable to read config, %v", err)
@@ -22,18 +26,15 @@ func main() {
 	//Create MailClient
 	mailService := emailService.NewMailClient(config.MailJet)
 
-	//create Server
-	server := server.Server{MailService: mailService, Config: config}
+	resolvers := &graph.Resolver{
+		MailService: mailService,
+		Config:      config,
+	}
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolvers}))
 
-	port := ":" + strconv.Itoa(config.Server.Port)
-	lis, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterEmailServer(s, &server)
-	log.Printf("Listening on PORT %v", port)
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.Handle("/query", srv)
+
+	log.Printf("connect to http://localhost:%v/ for GraphQL playground", config.Server.Port)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Server.Port), nil))
 }

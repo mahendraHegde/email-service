@@ -1,4 +1,4 @@
-package utils
+package model
 
 import (
 	mailjet "github.com/mailjet/mailjet-apiv3-go"

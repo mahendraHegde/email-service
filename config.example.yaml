@@ -1,0 +1,13 @@
+me:
+  email: ur@gmail.com
+hegdeflutes:
+  email: his@gmail.com
+server:
+  port: 5000
+mailjet:
+  templates:
+    contactme: 2278881
+    hegdeflutescontactus: 2296585
+  apikey:
+    public: public
+    private: private
